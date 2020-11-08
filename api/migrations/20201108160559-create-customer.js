@@ -6,7 +6,8 @@ module.exports = {
       await queryInterface.createTable('Customers', {
         id: {
           type: Sequelize.STRING(191),
-          unique:true
+          unique:true,
+          primaryKey: true,
         },
         password: {
           type: Sequelize.STRING(191)
