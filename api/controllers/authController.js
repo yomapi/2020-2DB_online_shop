@@ -1,4 +1,5 @@
 const { sequelize, Sequelize, Customer } = require('../models')
+const config = require(__dirname + '/../config/config')
 const jwt = require('jsonwebtoken')
 
 exports.login = async (req, res) => {
@@ -11,14 +12,15 @@ exports.login = async (req, res) => {
         userInfo: {
             id: null,
         },
-        toeknConfig: {
+        tokenInfo: {
             expiresIn: '24h',
             issuer: 'khusinsa',
         },
     }
 
     let match = false
-    try {
+    
+    try {//TODO: add Seller
         user = await Customer.findByPk(id)
         if (user) {
             match = (user.password === password)
@@ -32,7 +34,7 @@ exports.login = async (req, res) => {
 
     if (match) {
         tokenInfo.userInfo.id = user.id
-        token = jwt.sign(tokenInfo.userInfo, config.JWT_KEY, toeknInfo.toeknConfig)
+        token = jwt.sign(tokenInfo.userInfo, config.JWT_KEY, tokenInfo.toeknConfig)
         return res.status(200).json( {Token: token})
     } else {
         message = "Invalid Password"

@@ -15,5 +15,6 @@ module.exports = {
     'host': host,
     'port': port,
     'dialect': 'mysql',
-    'operatorsAliases': false
+    'operatorsAliases': false,
+    'JWT_KEY': JWT_KEY,
 }
