@@ -37,7 +37,7 @@ exports.CustomerUpdate = async (req, res) => {
 
 exports.CustomerCreate = async (req, res) => {
     const id = req.body.id
-    const pwd = req.body.pwd
+    const password = req.body.password
     const name = req.body.name
     //TODO: 넘겨온 값 validation
     

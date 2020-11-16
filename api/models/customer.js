@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         password: {
             type: DataTypes.STRING(191),
+        },
+        name: {
+            type: DataTypes.STRING(191),
         }
     }, {
         sequelize,
