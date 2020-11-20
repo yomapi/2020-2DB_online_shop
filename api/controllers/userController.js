@@ -11,6 +11,7 @@ exports.UserInfo = async (req, res) => {
     }
 
     user = await User.findByPk(id)
+     //TODO: 판매자인지도 같이 보내줄것
     if (user) {
         data = {
             id: user.id,

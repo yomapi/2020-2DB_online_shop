@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true
     },
     name: {
       type: DataTypes.STRING(191)
@@ -16,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     price:{
       type: DataTypes.INTEGER
+    },
+    sellerId: {
+      type:DataTypes.STRING(191)
     }
   }, {
     sequelize,
