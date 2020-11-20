@@ -1,8 +1,8 @@
-const { sequelize, Sequelize, Customer } = require('../models')
+const { sequelize, Sequelize, User } = require('../models')
 
 exports.UserInfo = async (req, res) => {
     const id = req.params.id
-    let customer = null
+    let user = null
     const token = req.decoded   
 
     if (id !== token.id) {
@@ -11,64 +11,64 @@ exports.UserInfo = async (req, res) => {
     }
 
     //TODO: add Seller
-    customer = await Customer.findByPk(id)
-    if (customer) {
+    user = await User.findByPk(id)
+    if (user) {
         data = {
-            id: customer.id,
-            name: customer.name
+            id: user.id,
+            name: user.name
         }
         return res.status(200).json(data)
     } else {
-        message = "Customer Not Found"
+        message = "User Not Found"
         return res.status(404).json( {message} )
     }
 }
 
 exports.UserUpdate = async (req, res) => {
     const id = req.params.userId
-    let customer = null
+    let user = null
     //TODO: body validation
-    customer = await Customer.findByPk(id)
-    if (!customer) {
-        message = "Customer Not Found"
+    user = await User.findByPk(id)
+    if (!user) {
+        message = "User Not Found"
         return res.status(404).json( {message} )
     } else {
-        await customer.update(req.body)
-        return res.status(201).json(customer)
+        await user.update(req.body)
+        return res.status(201).json(user)
     }
 }
 
 exports.UserCreate = async (req, res) => {
     const id = req.body.id
     const password = req.body.password
+    const isSeller = req.body.isSeller
     const name = req.body.name
     //TODO: 넘겨온 값 validation
     
-    let customer = null
-    customer = await Customer.findByPk(id)
-    if (customer) {
+    let user = null
+    user = await User.findByPk(id)
+    if (user) {
         return res.status(400).json({message: "User ID already Used"})
     } else {
-        customer = await Customer.create(req.body)
-        return res.status(201).json(customer)
+        user = await User.create(req.body)
+        return res.status(201).json(user)
     }
 }
 
 
 exports.UserDelete = async (req, res) => {
     const id = req.body.id
-    let customer = null
+    let user = null
     let result = {
         code: 500,
         data: null,
         message: "",
         sucess: false
     }
-    customer = await Customer.destroy({
+    user = await User.destroy({
         where: { id }
     })
     result.code = 201
-    result.data = customer
     result.sucess = true
     return res.status(201).json(result)
 }

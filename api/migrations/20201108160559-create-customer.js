@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return Promise.all([
-      await queryInterface.createTable('Customers', {
+      await queryInterface.createTable('Users', {
         id: {
           type: Sequelize.STRING(191),
           unique:true,
@@ -14,6 +14,11 @@ module.exports = {
         },
         name: {
           type: Sequelize.STRING(191)
+        },
+        isSeller: {
+          type: Sequelize.BOOLEAN,
+          defaultValue: false,
+          allowNull: false
         },
         createdAt: {
           type: Sequelize.DATE,
@@ -34,6 +39,6 @@ module.exports = {
 
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Customers');
+    await queryInterface.dropTable('Users');
   }
 };

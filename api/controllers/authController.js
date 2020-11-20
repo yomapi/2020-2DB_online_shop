@@ -1,4 +1,4 @@
-const { sequelize, Sequelize, Customer } = require('../models')
+const { sequelize, Sequelize, User } = require('../models')
 const config = require(__dirname + '/../config/config')
 const jwt = require('jsonwebtoken')
 
@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
     let match = false
     
     try {//TODO: add Seller
-        user = await Customer.findByPk(id)
+        user = await User.findByPk(id)
         if (user) {
             match = (user.password === password)
         } else {

@@ -2,8 +2,8 @@
 const { sequelize } = require('.')
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-    class Customer extends Model { }
-    Customer.init({
+    class User extends Model { }
+    User.init({
         id: {
             type: DataTypes.STRING(191),
             primaryKey: true,
@@ -13,11 +13,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         name: {
             type: DataTypes.STRING(191),
+        },
+        isSeller: {
+            type: DataTypes.BOOLEAN
         }
     }, {
         sequelize,
         paranoid: true,
-        modelName: 'Customer'
+        modelName: 'User'
     })
-    return Customer
+    return User
 }
