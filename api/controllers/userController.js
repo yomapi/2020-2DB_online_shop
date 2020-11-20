@@ -74,6 +74,8 @@ exports.UserDelete = async (req, res) => {
         return res.status(401).json( {message} )
     }
     let user = null
+    //TODO: 존재하는 사용자인지 확인
+    //TODO: 판매자일 경우 등록된 상품 삭제(soft deletion)
     try {
         user = await User.destroy({
             where: { id }
