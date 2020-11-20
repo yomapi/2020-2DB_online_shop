@@ -7,7 +7,7 @@ exports.memberOnly = (req, res, next) => {
     try {
         req.decoded = jwt.verify(token, config.JWT_KEY)
         return next()
-    } catch(err) {
+    } catch(error) {
         if (error.name === 'TokenExpiredError') {
             return res.status(419).json( {message: "TokenExpired" })
         } else {

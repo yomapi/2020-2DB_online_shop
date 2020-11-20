@@ -10,7 +10,6 @@ exports.UserInfo = async (req, res) => {
         return res.status(401).json( {message} )
     }
 
-    //TODO: add Seller
     user = await User.findByPk(id)
     if (user) {
         data = {
@@ -25,16 +24,27 @@ exports.UserInfo = async (req, res) => {
 }
 
 exports.UserUpdate = async (req, res) => {
-    const id = req.params.userId
+    const id = req.params.id 
+    const token = req.decoded   
+
+    if (id !== token.id) {
+        message = "UnAuthorized Access"
+        return res.status(401).json( {message} )
+    }
+
     let user = null
     //TODO: body validation
-    user = await User.findByPk(id)
-    if (!user) {
-        message = "User Not Found"
-        return res.status(404).json( {message} )
-    } else {
-        await user.update(req.body)
-        return res.status(201).json(user)
+    try {
+        user = await User.findByPk(id)
+        if (!user) {
+            message = "User Not Found"
+            return res.status(404).json( {message} )
+        } else {
+            await user.update(req.body)
+            return res.status(201).json(user)
+        }
+    } catch (err) {
+        return res.status(err.code).json(error.message)
     }
 }
 
@@ -57,19 +67,20 @@ exports.UserCreate = async (req, res) => {
 
 
 exports.UserDelete = async (req, res) => {
-    const id = req.body.id
-    let user = null
-    let result = {
-        code: 500,
-        data: null,
-        message: "",
-        sucess: false
+    const id = req.params.id 
+    const token = req.decoded   
+    if (id !== token.id) {
+        message = "UnAuthorized Access"
+        return res.status(401).json( {message} )
     }
-    user = await User.destroy({
-        where: { id }
-    })
-    result.code = 201
-    result.sucess = true
-    return res.status(201).json(result)
+    let user = null
+    try {
+        user = await User.destroy({
+            where: { id }
+        })
+        return res.status(201).json({sucess: true})
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
 }
 
