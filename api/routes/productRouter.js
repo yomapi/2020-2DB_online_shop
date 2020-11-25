@@ -9,5 +9,6 @@ router.get('/products/name/:name', productController.ProductSearchByName)
 router.get('/products/tag/:tag', productController.ProductSearchByTag)
 router.get('/products/provider/:provider', productController.ProductSearchBySellerId)
 router.get('/products/:productId', productController.ProductInfo)
+router.delete('/products/:productId',sellerOnly, productController.ProductDelete)
 
 module.exports = router;

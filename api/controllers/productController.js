@@ -101,5 +101,33 @@ exports.ProductInfo = async (req, res) => {
         return res.status(error.code).json(error.message)
     }
 }
-//delete
+exports.ProductDelete = async (req, res) => {
+    //checkOwner
+    const token = req.decoded   
+    const productId = req.params.productId
+    let product = null
+    let result = null
+    let data = null
+    try {
+        product = await Product.findByPk(productId)
+        if (!product) {
+            return res.status(404).json( {message:'Product Not Found'} )
+        } 
+        if (product.sellerId != token.id) {
+            return res.status(401).json( {message:'UnAuthorized Access'} )
+        }
+        //TODO: delete Order on cascade
+        result = await Product.destroy({
+            where: { id: product.id }
+        })
+        console.log(result)
+        data = product.dataValues
+        data.deleted = true
+        console.log(data)
+        return res.status(201).json(data)
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }    
+}
+
 //update
