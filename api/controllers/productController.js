@@ -67,3 +67,39 @@ exports.ProductSearchByTag = async (req, res) => {
         return res.status(500).json( error.message )
     }
 }
+
+exports.ProductSearchBySellerId = async (req, res) => {
+    const sellerId = req.params.provider
+    let products = null
+    try {
+        products = await Product.findAndCountAll({
+            where: {
+                sellerId
+            }
+        })
+        const data = {
+            count: products.count,
+            data: products.rows
+        }
+        return res.status(200).json(data)
+    } catch (error) {
+        return res.status(500).json( error.message )
+    }
+}
+
+exports.ProductInfo = async (req, res) => {
+    const id = req.params.productId
+    let product = null
+    try {
+        product = await Product.findByPk(id)
+        if (!product) {
+            return res.status(404).json( {message:'Product Not Found'} )
+        } else {
+            return res.status(200).json(product)
+        }
+    } catch(error) {
+        return res.status(error.code).json(error.message)
+    }
+}
+//delete
+//update
