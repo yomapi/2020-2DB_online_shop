@@ -1,6 +1,6 @@
 const { token } = require('morgan')
 const { sequelize, Sequelize, User, Product } = require('../models')
-
+const Op = Sequelize.Op
 
 exports.ProductList = async (req, res) => {
     let products = null
@@ -24,10 +24,27 @@ exports.ProductCreate = async (req, res) => {
     let product = null
     try {
         product = await Product.create(data)
-        console.log(product)
         return res.status(201).json(product)
     } catch(error) {
         return res.status(500).json(error.message)
     }
-    
+}
+
+exports.ProductSearchByName = async (req, res) => {
+    const searchName = req.params.name
+    let products = null
+    try {
+        products = await Product.findAndCountAll({
+            where: {
+                name: { [Op.like]: '%' + searchName + '%' }
+            }
+        })
+        const data = {
+            count: products.count,
+            data: products.rows
+        }
+        return res.status(200).json(data)
+    } catch (error) {
+        return res.status(500).json( error.message )
+    }
 }

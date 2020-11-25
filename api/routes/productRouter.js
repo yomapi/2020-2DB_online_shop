@@ -5,5 +5,6 @@ const { memberOnly, sellerOnly } =  require ('../middlewares/auth')
 
 router.get('/products', productController.ProductList)
 router.post('/products', sellerOnly, productController.ProductCreate)
+router.get('/products/name/:name', productController.ProductSearchByName)
 
 module.exports = router;
