@@ -55,7 +55,7 @@ exports.ProductSearchByTag = async (req, res) => {
     try {
         products = await Product.findAndCountAll({
             where: {
-                tag: { [Op.like]: '%' + searchName + '%' }
+                tag: { [Op.like]: '%' + searchTag + '%' }
             }
         })
         const data = {
