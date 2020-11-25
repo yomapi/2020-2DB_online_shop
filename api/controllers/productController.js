@@ -48,3 +48,22 @@ exports.ProductSearchByName = async (req, res) => {
         return res.status(500).json( error.message )
     }
 }
+
+exports.ProductSearchByTag = async (req, res) => {
+    const searchTag = req.params.tag
+    let products = null
+    try {
+        products = await Product.findAndCountAll({
+            where: {
+                tag: { [Op.like]: '%' + searchName + '%' }
+            }
+        })
+        const data = {
+            count: products.count,
+            data: products.rows
+        }
+        return res.status(200).json(data)
+    } catch (error) {
+        return res.status(500).json( error.message )
+    }
+}
