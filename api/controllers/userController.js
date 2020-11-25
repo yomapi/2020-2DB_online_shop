@@ -11,6 +11,7 @@ exports.UserInfo = async (req, res) => {
     }
 
     user = await User.findByPk(id)
+     //TODO: 판매자인지도 같이 보내줄것
     if (user) {
         data = {
             id: user.id,
@@ -74,6 +75,8 @@ exports.UserDelete = async (req, res) => {
         return res.status(401).json( {message} )
     }
     let user = null
+    //TODO: 존재하는 사용자인지 확인
+    //TODO: 판매자일 경우 등록된 상품 삭제(soft deletion)
     try {
         user = await User.destroy({
             where: { id }

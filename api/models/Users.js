@@ -22,5 +22,19 @@ module.exports = (sequelize, DataTypes) => {
         paranoid: true,
         modelName: 'User'
     })
+    User.isSeller = async function(id) {
+        let user = null
+        user = await User.findOne({
+            where: {
+                id,
+                isSeller:true
+            }
+        })
+        if (user) {
+            return user
+        } else {
+            return false
+        }
+    }
     return User
 }
