@@ -10,5 +10,6 @@ router.get('/products/tag/:tag', productController.ProductSearchByTag)
 router.get('/products/provider/:provider', productController.ProductSearchBySellerId)
 router.get('/products/:productId', productController.ProductInfo)
 router.delete('/products/:productId',sellerOnly, productController.ProductDelete)
+router.put('/products/:productId',sellerOnly, productController.ProductUpdate)
 
 module.exports = router;

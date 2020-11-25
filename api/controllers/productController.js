@@ -120,14 +120,31 @@ exports.ProductDelete = async (req, res) => {
         result = await Product.destroy({
             where: { id: product.id }
         })
-        console.log(result)
         data = product.dataValues
         data.deleted = true
-        console.log(data)
         return res.status(201).json(data)
     } catch (error) {
         return res.status(500).json(error.message)
     }    
 }
 
-//update
+exports.ProductUpdate = async (req, res) => {
+    const token = req.decoded
+    const productId = req.params.productId
+    const data = req.body
+    let product = null
+    //TODO: Update validation
+    try {
+        product = await Product.findByPk(productId)
+        if (!product) {
+            return res.status(404).json( {message:'Product Not Found'} )
+        } 
+        if (product.sellerId != token.id) {
+            return res.status(401).json( {message:'UnAuthorized Access'} )
+        }
+        await product.update(data)
+        return res.status(201).json(product)
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
+}
