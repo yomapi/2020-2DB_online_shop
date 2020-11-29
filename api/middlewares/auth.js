@@ -23,7 +23,6 @@ exports.sellerOnly = async (req, res, next) => {
     try {
         req.decoded = jwt.verify(token, config.JWT_KEY)
         seller = await User.isSeller(req.decoded.id)
-        console.log(seller)
         if (seller) {
             return next()
         } else {
@@ -33,7 +32,6 @@ exports.sellerOnly = async (req, res, next) => {
         if (error.name === 'TokenExpiredError') {
             return res.status(419).json( {message: "TokenExpired" })
         } else {
-            console.log(error.message)
             return res.status(401).json( {message: "InvalidToken" })
         }
     }
