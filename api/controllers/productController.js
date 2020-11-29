@@ -4,7 +4,9 @@ const Op = Sequelize.Op
 exports.ProductList = async (req, res) => {
     let products = null
     try{
-        products = await Product.findAll()
+        products = await Product.findAll({
+            paranoid: false
+        })
         return res.status(200).json(products)
     } catch(error) {
         return res.status(500).json(error.message)
@@ -36,7 +38,8 @@ exports.ProductSearchByName = async (req, res) => {
         products = await Product.findAndCountAll({
             where: {
                 name: { [Op.like]: '%' + searchName + '%' }
-            }
+            },
+            paranoid: false
         })
         const data = {
             count: products.count,
@@ -55,7 +58,8 @@ exports.ProductSearchByTag = async (req, res) => {
         products = await Product.findAndCountAll({
             where: {
                 tag: { [Op.like]: '%' + searchTag + '%' }
-            }
+            },
+            paranoid: false
         })
         const data = {
             count: products.count,
@@ -74,7 +78,8 @@ exports.ProductSearchBySellerId = async (req, res) => {
         products = await Product.findAndCountAll({
             where: {
                 sellerId
-            }
+            },
+            paranoid: false
         })
         const data = {
             count: products.count,
@@ -90,7 +95,7 @@ exports.ProductInfo = async (req, res) => {
     const id = req.params.productId
     let product = null
     try {
-        product = await Product.findByPk(id)
+        product = await Product.findByPk(id,{ paranoid: false })
         if (!product) {
             return res.status(404).json( {message:'Product Not Found'} )
         } else {

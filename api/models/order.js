@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     address: {
-      type: DataTypes.STRING(191)
+      type: DataTypes.TEXT('MEDIUM')
     },
     status: {
-      type: DataTypes.STRING(191)
+      type: DataTypes.BOOLEAN
     },
     createdAt: {
       allowNull: false,

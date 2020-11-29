@@ -10,10 +10,10 @@ module.exports = {
           type: Sequelize.INTEGER
         },
         address: {
-          type: Sequelize.STRING(191)
+          type: Sequelize.TEXT('MEDIUM')
         },
         status: {
-          type: Sequelize.STRING(191)
+          type: Sequelize.BOOLEAN
         },
         createdAt: {
           allowNull: false,
@@ -56,7 +56,7 @@ module.exports = {
     return Promise.all[
       await queryInterface.removeColumn('Orders', 'sellerId'),
       await queryInterface.removeColumn('Orders', 'productId'),
-      await queryInterface.removeColumn('Orders', 'userId'),
+      await queryInterface.removeColumn('Orders', 'customerId'),
       await queryInterface.dropTable('Orders')
     ]
   }
