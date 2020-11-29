@@ -47,6 +47,9 @@ module.exports = {
     ])
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Products');
+    return Promise.all[
+      await queryInterface.removeColumn('Products', 'sellerId'),
+      await queryInterface.dropTable('Products')
+    ]
   }
 };
