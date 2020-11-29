@@ -84,3 +84,30 @@ exports.OrderDelete = async (req, res) => {
         return res.status(500).json(error.message)
     }
 }
+
+exports.OrderList = async (req, res) => {
+    const userId = req.params.userId
+    let orders = null
+    if (req.decoded.id != userId) {
+        return res.status(401).json({message:'UnAuthorized Access'})
+    }
+
+    try {
+        orders = await Order.findAndCountAll({
+            where: {
+                customerId: userId
+            }
+        }) 
+        if (orders.count == 0) {
+            return res.status(404).json({message:'Order Not Found'})
+        } else {
+            const data = {
+                count: orders.count,
+                data: orders.rows
+            }
+            return res.status(200).json({ data })
+        }
+    } catch (err) {
+        return res.status(500).json({message:err.message})
+    }
+}
