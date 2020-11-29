@@ -9,6 +9,7 @@ router.get('/user/:userId/orders/:orderId', memberOnly, orderController.OrderInf
 router.put('/user/:userId/orders/:orderId',memberOnly, orderController.OrderDelete)
 router.get('/user/:userId/orders',memberOnly, orderController.OrderList)
 router.get('/user/:userId/orders/status/:status',memberOnly, orderController.OrderSearchByStatus)
-
+router.get('/user/:userId/orders/tag/:tag',memberOnly, orderController.OrderSearchByTags)
+router.get('/user/:userId/orders/name/:name',memberOnly, orderController.OrderSearchByName)
 
 module.exports = router;

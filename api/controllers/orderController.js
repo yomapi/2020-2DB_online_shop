@@ -115,30 +115,78 @@ exports.OrderList = async (req, res) => {
 exports.OrderSearchByStatus = async (req, res) => {
     const userId = req.params.userId
     const status = req.params.status
-
-    let orders = null
+    let result = null
+    
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag
+                   from Orders o, Products p
+                   where o.customerId = '${userId}' and o.status Like '%${status}%' and o.productId = p.id` 
+    
     if (req.decoded.id != userId) {
         return res.status(401).json({message:'UnAuthorized Access'})
     }
-
     try {
-        orders = await Order.findAndCountAll({
-            where: {
-                customerId: userId,
-                status
-            }
-        }) 
-        if (orders.count == 0) {
-            return res.status(404).json({message:'Order Not Found'})
-        } else {
-            const data = {
-                count: orders.count,
-                data: orders.rows
-            }
-            return res.status(200).json({ data })
+        result = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+        })
+        data = {
+            count: result.length,
+            data: result
         }
+        return res.status(200).json(data)
     } catch (err) {
         return res.status(500).json({message:err.message})
     }
 
+}
+
+exports.OrderSearchByTags = async (req, res) => {
+    const userId = req.params.userId
+    const tag = req.params.tag
+    let result = null
+    
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag
+                   from Orders o, Products p
+                   where o.customerId = '${userId}' and p.tag Like '%${tag}%' and o.productId = p.id` 
+    
+    if (req.decoded.id != userId) {
+        return res.status(401).json({message:'UnAuthorized Access'})
+    }
+    try {
+        result = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+        })
+        data = {
+            count: result.length,
+            data: result
+        }
+        return res.status(200).json(data)
+    } catch (err) {
+        return res.status(500).json({message:err.message})
+    }
+}
+
+exports.OrderSearchByName = async (req, res) => {
+    const userId = req.params.userId
+    const name = req.params.name
+    let result = null
+    
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag
+                   from Orders o, Products p
+                   where o.customerId = '${userId}' and p.name Like '%${name}%' and o.productId = p.id` 
+    
+    if (req.decoded.id != userId) {
+        return res.status(401).json({message:'UnAuthorized Access'})
+    }
+    try {
+        result = await sequelize.query(query, {
+            type: sequelize.QueryTypes.SELECT
+        })
+        data = {
+            count: result.length,
+            data: result
+        }
+        return res.status(200).json(data)
+    } catch (err) {
+        return res.status(500).json({message:err.message})
+    }
 }
