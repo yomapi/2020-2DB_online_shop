@@ -8,6 +8,7 @@ router.get('/user/:userId/orders/:orderId', memberOnly, orderController.OrderInf
 router.get('/user/:userId/orders/:orderId', memberOnly, orderController.OrderInfo)
 router.put('/user/:userId/orders/:orderId',memberOnly, orderController.OrderDelete)
 router.get('/user/:userId/orders',memberOnly, orderController.OrderList)
+router.get('/user/:userId/orders/status/:status',memberOnly, orderController.OrderSearchByStatus)
 
 
 module.exports = router;
