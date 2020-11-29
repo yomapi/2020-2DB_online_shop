@@ -1,4 +1,3 @@
-const { token } = require('morgan')
 const { sequelize, Sequelize, User, Product } = require('../models')
 const Op = Sequelize.Op
 
