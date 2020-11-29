@@ -38,6 +38,9 @@ module.exports = {
         charset: 'utf8mb4',
         collate: 'utf8mb4_unicode_ci'
       }),
+      await queryInterface.addColumn('Products', 'sellerId', {
+        type: Sequelize.STRING(191)
+      }),
       await queryInterface.sequelize.query(
         'alter table Products add FOREIGN KEY(sellerId) REFERENCES Users(id) ON DELETE CASCADE;'
       )

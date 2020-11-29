@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     sellerId: {
       type:DataTypes.STRING(191)
+    },
+    tag: {
+      type:DataTypes.STRING(191)
     }
   }, {
     sequelize,
