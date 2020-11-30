@@ -1,0 +1,8 @@
+export {default as SearchTemplate} from '../components/SearchTemplate'
+export {default as SearchItemList} from '../components/SearchItemList'
+export {default as SearchItemInfo} from '../components/SearchItemInfo'
+export {default as notfound} from '../components/notfound'
+export {default as OrderListTemplate} from '../components/OrderListTemplate'
+export {default as UserInfoTemplate} from '../components/UserInfoTemplate'
+export {default as LoginTemplate} from '../components/LoginTemplate'
+export {default as Home} from '../components/Home'
