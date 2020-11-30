@@ -16,8 +16,8 @@ const LoginTemplate = (props) =>{
             <section className="products-wrapper">
                 <div>
                     <Switch>
-                        <Route path={`${props.match.url}/signup`} component={LoginSignUp} />
-                        <Route exact = {true} path={`${props.match.url}`} component={Login}/>
+                        <Route path={`/login/signup`} component={LoginSignUp} />
+                        <Route exact = {true} path={`/login`} render={()=><Login LoginHandler = {props.LoginHandler}/>}/>
                     </Switch>
                 </div>   
             </section>

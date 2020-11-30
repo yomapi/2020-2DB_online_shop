@@ -5,14 +5,38 @@ import Router from './Routes/Router';
 
 
 class Consumer extends Component{
+
+  constructor(props){
+    super(props);
+    this.state ={Token:"",
+                 IsLoggedOn:false,
+                 userId:""}
+  }
+
+  LoginHandler = (token,id) =>{
+    this.setState({
+      IsLoggedOn : true,
+      Token : token,
+      userId : id
+    })
+  }
+
+  LogoutHandler = () =>{
+    this.setState({
+      IsLoggedOn : false,
+      Token : "",
+      userId:""
+    })
+  }
+
   render(){
     return(
       <>
         <HeaderLayout>
-          <Header/>
+          <Header login={this.state.IsLoggedOn} LogoutHandler={this.LogoutHandler}/>
         </HeaderLayout>
         <BodyLayout>
-          <Router/>
+          <Router token={this.state.Token} login={this.state.IsLoggedOn} userId={this.state.userId} LoginHandler = {this.LoginHandler}/>
         </BodyLayout>
       </>
     )

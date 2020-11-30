@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import './LoginSignUp.css';
-import {Link} from 'react-router-dom';
+import axios from 'axios'
+import {Link, Redirect} from 'react-router-dom';
 
 class LoginSignUp extends Component{
-    state={
-        userId:'',
-        name: '',
-        password: ''
+    constructor(props){
+        super(props);
+        this.state={
+            userId:'',
+            name: '',
+            password: '',
+            status: 0
+        }
     }
 
     handleChange=(e)=>{
@@ -22,8 +27,21 @@ class LoginSignUp extends Component{
     }
 
 
-    onSignUp=()=>{
+    renderRedirect = () => {
+        if(this.state.status == 201){
+            return <Redirect to='/login' />
+        }
+    }
 
+    postSignUp = async() =>{
+        const res = await axios.post('/signUp', {
+            id: this.state.userId,
+            password: this.state.password,
+            name : this.state.name,
+            isSeller : false
+          })
+        this.setState({status : res.status})
+        console.log("sta",res)
     }
     
     onKeyPress=(e)=>{
@@ -54,12 +72,11 @@ class LoginSignUp extends Component{
                                 <span className="tag-pod">비밀번호</span>
                                 <input value={this.state.password} onChange={this.handleChange_pass} onKeyPress={this.onKeyPress}/>
                             </div>
-                            <Link to = '/login'>
-                                <div className="update-button" onClick={this.onSignUp}>
-                                    가입완료
-                                </div>
-                            </Link>
+                            <div className="update-button" onClick={this.postSignUp}>
+                                가입완료
                             </div>
+                            </div>
+                            {this.renderRedirect()}
                         </div>
                     </div>
                 </div>

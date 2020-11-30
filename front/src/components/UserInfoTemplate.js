@@ -16,8 +16,8 @@ const UserInfoTemplate = (props) =>{
             <section className="products-wrapper">
                 <div>
                     <Switch>
-                        <Route path={`${props.match.url}/update`} component={UserInfoUpdate} />
-                        <Route exact = {true} path={`${props.match.url}`} component={UserInfo}/>
+                        <Route path={`/user/update`} render={()=><UserInfoUpdate token={props.token} userId={props.userId}/>} />
+                        <Route exact = {true} path={`/user`} render={()=><UserInfo token={props.token} userId={props.userId}/>}/>
                     </Switch>
                 </div>   
             </section>

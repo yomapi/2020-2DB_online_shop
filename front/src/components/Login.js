@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
 import './Login.css';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
+import axios from 'axios'
 
 class Login extends Component{
-    state={
-        userId:'ID',
-        password: 'PASSWORD'
+    constructor(props){
+        super(props);
+        this.state={
+            userId:'ID',
+            password: 'PASSWORD',
+            Token : '',
+            Logged : false
+        }
     }
+    
 
     handleChange=(e)=>{
         this.setState({userId : e.target.value})
@@ -16,9 +23,21 @@ class Login extends Component{
         this.setState({password : e.target.value})
     }
 
+    
+    onLogin = async() =>{
+        await this.getToken();
+        if (this.state.Token != ""){
+            this.props.LoginHandler(this.state.Token, this.state.userId);
+            this.setState({Logged:true});
+        }
+    }
 
-    onLogin=()=>{
-
+    getToken = async() =>{
+        const res = await axios.put('/signIn', {
+            id: this.state.userId,
+            password: this.state.password
+          })
+        this.setState({Token:res.data.Token})
     }
     
     onKeyPress=(e)=>{
@@ -27,11 +46,18 @@ class Login extends Component{
         }
     }
 
+    renderRedirect = () => {
+        if(this.state.Logged){
+            return <Redirect to='/' />
+        }
+    }
+
     render(){
         const{id,userId,userName,registerDate} = this.state;
         
         return(
             <div className="info-wrapper">
+                {this.renderRedirect()}
                 <div className="info-box">
                     <div className="order-Right">
                         <div className = "user-info-box">
@@ -46,7 +72,7 @@ class Login extends Component{
                                     <input value={this.state.password} onChange={this.handleChange_pass} onKeyPress={this.onKeyPress}/>
                                 </div>
                                 <div className="button-pod">
-                                    <Link to = '/'>
+                                    <Link to = {this.state.Logged ? '/' : '/login'}>
                                         <div className="update-button" onClick={this.onLogin}>
                                             로그인
                                         </div>

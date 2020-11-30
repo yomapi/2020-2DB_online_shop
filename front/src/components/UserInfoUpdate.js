@@ -1,15 +1,20 @@
 import React, {Component} from 'react';
 import './UserInfoUpdate.css';
-import {Link} from 'react-router-dom';
+import axios from 'axios'
+import {Link, Redirect} from 'react-router-dom';
 
 class UserInfoUpdate extends Component{
-    state={
-        id:1,
-        userId:'kdysy1130',
-        userName:'김대연',
-        registerDate:'2020-01-23',
-        password: ''
+    constructor(props){
+        super(props);
+        this.state={
+            token: this.props.token,
+            userId : this.props.userId,
+            userName:'',
+            registerDate:'',
+            password: ''
+        };
     }
+    
 
     handleChange=(e)=>{
         this.setState({userName : e.target.value})
@@ -18,7 +23,6 @@ class UserInfoUpdate extends Component{
     handleChange_pass = (e) =>{
         this.setState({password : e.target.value})
     }
-
 
     onUpdate=()=>{
 
@@ -33,12 +37,39 @@ class UserInfoUpdate extends Component{
 
     componentDidMount(){
         this.setState({
-            id:1,
-            userId:'kdysy1130',
-            userName:'김대연',
-            registerDate:'2020-01-23'
+            token: this.props.token,
+            userId : this.props.userId,
+            userName : '',
+            registerDate:''
         })
+        this.getInfo();
     }
+
+    getInfo = async() =>{
+        const res = await axios.get(`/user/${this.state.userId}`, 
+        {
+            headers: {
+                Authorization: this.state.token
+        }});
+        this.setState({userName : res.data.name});
+    }
+
+    putInfo = async() =>{
+        console.log(this.state.token)
+        const res = await axios.put(`/user/${this.state.userId}`, 
+        {
+            password : this.state.password,
+            name : this.state.userName
+        },
+        {
+            headers: {
+                Authorization: this.state.token
+            }
+        });
+        this.setState({userName : res.data.name});
+        console.log(res)
+    }
+
 
     render(){
         const{id,userId,userName,registerDate} = this.state;
@@ -51,15 +82,15 @@ class UserInfoUpdate extends Component{
                         <div className = "order-info-header">정보변경</div>
                         <div className = "user-info-discription">
                             <div className="order-pod">
-                                <span className="tag-pod">회원이름</span>
-                                    <input value={this.state.address} onChange={this.handleChange} onKeyPress={this.onKeyPress}/>
+                                <span className="tag-pod">수정이름</span>
+                                    <input value={this.state.userName} onChange={this.handleChange} onKeyPress={this.onKeyPress}/>
                             </div>
                             <div className="order-pod">
-                                <span className="tag-pod">비밀번호</span>
+                                <span className="tag-pod">수정비번</span>
                                 <input value={this.state.password} onChange={this.handleChange_pass} onKeyPress={this.onKeyPress}/>
                             </div>
                             <Link to = '/user'>
-                            <div className="update-button" onClick={this.onUpdate}>
+                            <div className="update-button" onClick={this.putInfo}>
                                 변경
                             </div>
                             </Link>

@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
 class Header extends Component{
+    constructor(props){
+        super(props);
+    }
+
+
     render(){
         return(
             <Container>
@@ -20,11 +25,11 @@ class Header extends Component{
                                 <NavList>
                                     <NavItem><Link to='/search'>상품 검색</Link></NavItem>
                                     <NavItem><Link to ='/orders'>주문 내역</Link></NavItem>
-                                    <NavItem><Link to ='/user'>회원 정보</Link></NavItem>
+                                    {this.props.login ? <NavItem><Link to ='/user'>회원 정보</Link></NavItem> : ''}
                                 </NavList>
                             </Nav>
                             <Sign>
-                                <Link to = '/login'><SignItem>회원가입/로그인</SignItem></Link>
+                                {this.props.login ? <Link to = '/'><SignItem onClick={this.props.LogoutHandler}> 로그아웃 </SignItem></Link> : <Link to = '/login'><SignItem> 회원가입/로그인 </SignItem></Link>}
                             </Sign>
                         </Menu>
                     </HeaderMenu>

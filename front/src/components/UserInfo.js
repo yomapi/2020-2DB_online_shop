@@ -1,27 +1,42 @@
 import React, {Component} from 'react';
 import './UserInfo.css';
-import {Link} from 'react-router-dom';
+import axios from 'axios'
+import {Link, Redirect} from 'react-router-dom';
 
 class UserInfo extends Component{
-    state={
-        id:1,
-        userId:'',
-        userName:'',
-        registerDate:'',
+
+    constructor(props){
+        super(props)
+        this.state={
+            token: this.props.token,
+            userId : this.props.userId,
+            userName:'',
+            registerDate:'',
+        }
     }
+    
 
     componentDidMount(){
-
         this.setState({
-            id: 1,
-            userId : 'kdysy1130@naver.com',
-            userName : '김대연',
-            registerDate:'2020-01-01'
+            token: this.props.token,
+            userId : this.props.userId,
+            userName : '',
+            registerDate:''
         })
+        this.getInfo();
+    }
+
+    getInfo = async() =>{
+        const res = await axios.get(`/user/${this.state.userId}`, 
+        {
+            headers: {
+                Authorization: this.state.token
+        }});
+        this.setState({userName : res.data.name});
     }
 
     render(){
-        const{id,userId,userName,registerDate} = this.state;
+        const{userId,userName,registerDate} = this.state;
         
         return(
             <div className="info-wrapper">
