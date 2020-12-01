@@ -24,7 +24,7 @@ class Header extends Component{
                             <Nav>
                                 <NavList>
                                     <NavItem><Link to='/search'>상품 검색</Link></NavItem>
-                                    <NavItem><Link to ='/orders'>주문 내역</Link></NavItem>
+                                    {this.props.login ? <NavItem><Link to ='/orders'>주문내역</Link></NavItem> : ''}
                                     {this.props.login ? <NavItem><Link to ='/user'>회원 정보</Link></NavItem> : ''}
                                 </NavList>
                             </Nav>

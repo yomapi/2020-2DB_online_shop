@@ -31,3 +31,9 @@
   .search-button:hover {
     background: #3d3d3d;
   }
+
+  .Searchby{
+    margin-right : 5px;
+    padding : 0.5rem;
+    border-radius: 5px;
+  }
