@@ -25,7 +25,8 @@ class PorderListTemplate extends Component{
                     <div>
                         <Switch>
                             <Route exact = {true} path={`${this.props.match.url}`} component={PorderList}/>
-                            <Route path={`${this.props.match.url}/:id`} component={PorderItemInfo} />
+                            <Route path={`${this.props.match.url}/:id`} render={(props)=><PorderItemInfo token={this.props.token} userId={this.props.userId} match={this.props.match}/>} />
+                            {console.log(this.props.userId)}
                         </Switch>
                     </div>   
                 </section>

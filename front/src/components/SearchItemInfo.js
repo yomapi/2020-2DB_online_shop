@@ -22,7 +22,6 @@ class SearchItemInfo extends Component{
 
     _getInfo = async() =>{
         const res = await axios.get(`/products/${this.state.id}`);
-        console.log(res.data);
         this.setState({
             name : res.data.name,
             discription : res.data.content,
@@ -63,7 +62,6 @@ class SearchItemInfo extends Component{
                         </div>
                         
                         <div className = "purchase">
-                            {console.log("token??",this.props.token)}
                             {this.props.token == "" ? "": <Link to ={`${this.props.match.url}/purchase`}><div className="purchase-button">구매</div>
                             </Link>} 
                         </div>

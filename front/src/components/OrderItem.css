@@ -22,8 +22,21 @@ a{text-decoration: none; color:black;}
     background: rgba(235, 92, 92, 0.445);
 }
 
+.order-item.cancel{
+    background: rgba(92, 94, 235, 0.445);
+}
+
 .order-item.cancel:hover{
     background: rgba(201, 75, 75, 0.747);
+    border-radius: 5px;
+    box-shadow:2px 5px 5px rgba(0, 0, 0, 0.295);
+    border : 1px solid rgba(255, 255, 255, 0.329);
+    transform:scale(1.025); 
+    transition: transform .35s;  
+}
+
+.order-item.cancel:hover{
+    background: rgba(94, 75, 201, 0.747);
     border-radius: 5px;
     box-shadow:2px 5px 5px rgba(0, 0, 0, 0.295);
     border : 1px solid rgba(255, 255, 255, 0.329);

@@ -17,6 +17,10 @@
     background-color: rgba(255, 0, 0, 0.445);
 }
 
+.completedbox{
+    background-color: rgba(38, 0, 255, 0.445);
+}
+
 .info-photo{
     width:500px;
     text-align: left;

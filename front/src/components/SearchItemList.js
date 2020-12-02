@@ -13,8 +13,9 @@ class SearchItemList extends Component{
     render(){
         const {items} = this.props;
         const itemList = items.map(
-                ({id,name,tag,price,photo}) =>(
-                    <SearchItem id={id} name={name} tag={tag} price={price} photo={photo}/>
+                ({id,name,tag,price,photo,deletedAt}) =>(
+                    <SearchItem id={id} name={name} tag={tag} price={price} photo={photo} deletedAt={deletedAt} />
+                    
                 )
             );
         return(

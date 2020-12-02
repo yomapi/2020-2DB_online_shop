@@ -6,12 +6,12 @@ class OrderItem extends Component{
 
 
     render(){
-        const{id,name, tag, price, photo, orderdate, cancel, address, provider} = this.props;
+        const{id,name, tag, price, photo, orderdate, cancel, completed, address, provider} = this.props;
 
         return(
             <Link to={`/orders/${id}`}>
                 <div className="order-wrapper">
-                    <div className={`order-item ${ cancel ? ' cancel' : '' }`} >
+                    <div className={`order-item ${ cancel ? ' cancel' : '' } ${ completed ? ' completed' : '' }`} >
                         <div className = "order-photo">
                             <img src={photo}/>
                         </div>

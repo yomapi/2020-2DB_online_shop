@@ -1,21 +1,34 @@
 import React, {Component} from 'react';
 import './OrderForm.css';
 import {Link} from 'react-router-dom';
+import axios from 'axios'
 
 class OrderForm extends Component{
-    state={
-        id: 1,
-        providerId:'',
-        name:'',
-        discription:'',
-        tag:'',
-        price:25000,
-        registrationDate:'',
-        photo:'',
-        address:'',
-        others:'',
-
+    constructor(props){
+        super(props)
+        this.state={
+            id: props.match.params.id
+    
+        }
     }
+    
+    _getInfo = async() =>{
+        const res = await axios.get(`/products/${this.state.id}`);
+        this.setState({
+            name : res.data.name,
+            discription : res.data.content,
+            price : res.data.price,
+            providerId : res.data.sellerId,
+            tag : res.data.tag,
+            registrationDate : res.data.createdAt,
+            photo : 'https://i.pinimg.com/736x/eb/12/46/eb12465440ea39c8cd38bc31d73a1385.jpg'
+        })
+    }
+
+    componentDidMount(){
+        this._getInfo()
+    }
+
 
     handleChange=(e)=>{
         this.setState({address : e.target.value})
@@ -26,34 +39,27 @@ class OrderForm extends Component{
     }
 
 
-    onCreate=()=>{
-
+    onOrder=async()=>{
+        const res = await axios.post(`/orders`, 
+        {
+            address : this.state.address,
+            productId : this.state.id
+        },
+        {
+            headers: {
+                Authorization: this.props.token
+            }
+        });
     }
     
     onKeyPress=(e)=>{
         if(e.key === 'Enter'){
-            this.onCreate();
+            this.onOrder();
         }
     }
 
 
-    componentDidMount(){
-
-        this.setState({
-            id: 1,
-            providerId:'kdysy1130',
-            name:'애국가(주문테스트)',
-            discription:`
-            애국가(愛國歌)는 대한민국의 국가이다. 1919년 안창호에 의해 대한민국 임시 정부에서 스코틀랜드 민요인 〈올드 랭 사인〉에 삽입해서 부르기 시작하다가 1935년 한국의 작곡가 안익태가 지은 《한국환상곡》에 가사를 삽입해서 현재까지 부르고 있다.
-
-            가사의 작사자는 윤치호 설, 안창호 설, 윤치호와 최병헌 합작설 등이 있다. 윤치호의 작사설 때문에 대한민국 임시 정부에서는 애국가를 바꾸려 하였으나 대한민국 임시 정부 주석 김구의 변호로 계속 애국가로 채택하게 되었다.[1] 이후 1948년의 정부 수립 이후 국가로 사용되어 왔으며, 2010년 국민의례 규정에서 국민의례시 애국가를 부르거나 연주하도록 함으로써 국가로서의 역할을 간접적으로 규정하고 있다.[2][3]
-            `,
-            tag:'tag1, tag2, tag3, tag4',
-            price:25000,
-            registrationDate:'2020-11-09',
-            photo: 'https://i.pinimg.com/736x/eb/12/46/eb12465440ea39c8cd38bc31d73a1385.jpg'
-        })
-    }
+    
 
     render(){
         const{id, providerId, name, discription, tag, price, registrationDate} = this.state;
@@ -88,7 +94,7 @@ class OrderForm extends Component{
                                 <input value={this.state.others} onChange={this.handleChange_others} onKeyPress={this.onKeyPress}/>
                             </div>
                             <Link to ="/orders">
-                                <div className="purchase-button" onClick={this.onCreate}>
+                                <div className="purchase-button" onClick={this.onOrder}>
                                     주문하기
                                 </div>
                             </Link>

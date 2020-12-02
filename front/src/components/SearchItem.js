@@ -6,12 +6,11 @@ class SearchItem extends Component{
 
 
     render(){
-        const{id, name, tag, photo, price} = this.props;
-
+        const{id, name, tag, photo, price, deletedAt} = this.props;
         return(
 
             <Link to={`/search/${id}`}>
-                <div className="item-wrapper">
+                <div className={`item-wrapper ${deletedAt==null ? '' : 'delete'}`}>
                     <div className="search-item" >
                         <div className = "item-photo">
                             <img src={photo}/>
