@@ -35,7 +35,8 @@ exports.OrderInfo = async (req, res) => {
 
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, ifnull(p.deletedAt, true ) as productAlive, ifnull(o.deletedAt, true) as orederAlive
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, 
+                   o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orderDeletedAt
                    from Orders o, Products p
                    where o.customerId = '${userId}' and o.productId = p.id and o.id = '${orderId}'` 
     
@@ -91,7 +92,8 @@ exports.OrderList = async (req, res) => {
 
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, 
+                   o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orderDeletedAt
                    from Orders o, Products p
                    where o.customerId = '${userId}' and o.productId = p.id` 
     
