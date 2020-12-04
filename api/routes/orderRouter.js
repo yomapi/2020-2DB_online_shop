@@ -19,6 +19,6 @@ router.get('/seller/:userId/orders',sellerOnly, orderController.SellerOrderList)
 router.get('/seller/:userId/orders/status/:status',sellerOnly, orderController.SellerOrderSearchByStatus)
 router.get('/seller/:userId/orders/tag/:tag',sellerOnly, orderController.SellerOrderSearchByTags)
 router.get('/seller/:userId/orders/name/:name',sellerOnly, orderController.SellerOrderSearchByName)
-router.put('/seller/:userId/orders/:orderId/status/:status',sellerOnly, orderController.SellerOrderStatusCompleted)
+router.put('/seller/:userId/orders/:orderId/status/:status',sellerOnly, orderController.SellerOrderStatus)
 
 module.exports = router;
