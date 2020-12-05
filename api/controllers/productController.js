@@ -1,4 +1,4 @@
-const { sequelize, Sequelize, User, Product } = require('../models')
+const { sequelize, Sequelize, User, Product, File } = require('../models')
 const Op = Sequelize.Op
 
 exports.ProductList = async (req, res) => {
@@ -7,8 +7,16 @@ exports.ProductList = async (req, res) => {
         products = await Product.findAll({
             paranoid: false
         })
+
+        if (products.length > 0) {
+            for (product of products) {
+                
+                product.dataValues.image = await File.getImageById(product.dataValues.id)
+            }
+        } 
         return res.status(200).json(products)
     } catch(error) {
+        console.log(error)
         return res.status(500).json(error.message)
     }
 }
@@ -25,6 +33,7 @@ exports.ProductCreate = async (req, res) => {
     let product = null
     try {
         product = await Product.create(data)
+        product.dataValues.image = await File.getImageById(product.id)
         return res.status(201).json(product)
     } catch(error) {
         return res.status(500).json(error.message)
@@ -41,10 +50,17 @@ exports.ProductSearchByName = async (req, res) => {
             },
             paranoid: false
         })
+        
+        if (products.count > 0) {
+            for (product of products.rows) {
+                product.dataValues.image = await File.getImageById(product.dataValues.id)
+            }
+        } 
         const data = {
             count: products.count,
             data: products.rows
         }
+
         return res.status(200).json(data)
     } catch (error) {
         return res.status(500).json( error.message )
@@ -61,6 +77,11 @@ exports.ProductSearchByTag = async (req, res) => {
             },
             paranoid: false
         })
+        if (products.count > 0) {
+            for (product of products.rows) {
+                product.dataValues.image = await File.getImageById(product.dataValues.id)
+            }
+        } 
         const data = {
             count: products.count,
             data: products.rows
@@ -81,12 +102,19 @@ exports.ProductSearchBySellerId = async (req, res) => {
             },
             paranoid: false
         })
+        
+        if (products.count > 0) {
+            for (product of products.rows) {
+                product.dataValues.image = await File.getImageById(product.dataValues.id)
+            }
+        } 
         const data = {
             count: products.count,
             data: products.rows
         }
         return res.status(200).json(data)
     } catch (error) {
+        console.log(error)
         return res.status(500).json( error.message )
     }
 }
@@ -99,6 +127,7 @@ exports.ProductInfo = async (req, res) => {
         if (!product) {
             return res.status(404).json( {message:'Product Not Found'} )
         } else {
+            product.dataValues.image = await File.getImageById(product.id)
             return res.status(200).json(product)
         }
     } catch(error) {
