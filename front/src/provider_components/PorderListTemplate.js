@@ -36,18 +36,19 @@ class PorderListTemplate extends Component{
                 Authorization: this.props.token
         }});
         res.data.data.map(
-            ({id, name, price, tag, status, productDeletedAt, address, orederDeletedAt,image,sellerId}) =>(
+            ({id, name, price, tag, status, productDeletedAt, address, orederDeletedAt,image,sellerId, orderCreatedAt}) =>(
                 this.setState({
                     items : this.state.items.concat({
                         id:id , 
                         name:name, 
                         price:price, 
                         tag:tag, 
-                        photo : image, 
+                        photo : (image === null ? null :'http://localhost:3000/'+image.url), 
                         cancel : (orederDeletedAt==null && productDeletedAt==null ? false : true), 
                         address : address, 
                         completed :(status==1 ? true : false), 
-                        provider: sellerId
+                        provider: sellerId,
+                        orderCreatedAt : orderCreatedAt
                     })
                 })
             )
@@ -63,7 +64,7 @@ class PorderListTemplate extends Component{
                     </div></Link>
                     <section className="form-wrapper">
                         <div>
-                            <SearchForm/>
+                            <SearchForm token={this.props.token} userId={this.props.userId} onSearch={this.onSearch} from = "Sorder" searchby="name"/>
                         </div>
                     </section>
                 </div>

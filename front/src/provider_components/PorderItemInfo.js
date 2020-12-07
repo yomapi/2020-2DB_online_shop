@@ -33,19 +33,20 @@ class PorderItemInfo extends Component{
             headers: {
                 Authorization: this.props.token
         }});
+        console.log(res.data)
         this.setState({
             id: this.state.id,
-            customerId:res.data.data[0].customerId,
-            name: res.data.data[0].name,
-            discription:res.data.data[0].content,
-            tag: res.data.data[0].tag,
-            price:res.data.data[0].price,
-            registrationDate:'2020-11-09[미구현]',
-            photo: res.data.data[0].photo,
-            orderdate : "2020-11-11[미구현]",
-            cancel : (res.data.data[0].orederDeletedAt==null && res.data.data[0].productDeletedAt==null ? false : true),
-            completed : (res.data.data[0].status === 1 ? true : false),
-            address : res.data.data[0].address,
+            customerId:res.data.customerId||"test",
+            name: res.data.name,
+            discription:res.data.content,
+            tag: res.data.tag,
+            price:res.data.price,
+            registrationDate:res.data.productCreatedAt,
+            photo: (res.data.image === null ? null :'http://localhost:3000/'+res.data.image.url),
+            orderdate : res.data.orderCreatedAt,
+            cancel : (res.data.orederDeletedAt==null && res.data.productDeletedAt==null ? false : true),
+            completed : (res.data.status === 1 ? true : false),
+            address : res.data.address,
         })
     }
 

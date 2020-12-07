@@ -10,11 +10,12 @@ class PorderList extends Component{
     render(){
         const {items} = this.props;
         const itemList = items.map(
-                ({id,name,tag,price,photo,orderdate,cancel, completed, address, provider}) =>(
+                ({id,name,tag,price,photo,orderdate,cancel, completed, address, provider, orderCreatedAt}) =>(
                     <PorderItem id={id} name={name} tag={tag} price={price} photo={photo}
-                        orderdate={orderdate} cancel={cancel} completed={completed} address={address} provider={provider} />
+                        orderdate={orderdate} cancel={cancel} completed={completed} address={address} provider={provider} orderdate={orderCreatedAt}/>
                 )
             );
+        console.log(itemList)
         return(
             <div className="OrderList">
                 {itemList}

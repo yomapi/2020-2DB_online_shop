@@ -32,14 +32,13 @@ class OrderItemInfo extends Component{
             discription:res.data.content,
             tag: res.data.tag,
             price:res.data.price,
-            registrationDate:'2020-11-09[미구현]',
-            photo: res.data.photo,
-            orderdate : "2020-11-11[미구현]",
+            registrationDate:res.data.productCreatedAt,
+            photo: (res.data.image === null ? null :'http://localhost:3000/'+res.data.image.url),
+            orderdate : res.data.orderCreatedAt,
             cancel : (res.data.orderDeletedAt==null && res.data.productDeletedAt==null ? false : true),
             completed : (res.data.status === 1 ? true : false),
             address : res.data.address,
         })
-        console.log(res.data)
     }
 
     render(){

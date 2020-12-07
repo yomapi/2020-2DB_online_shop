@@ -36,18 +36,19 @@ class OrderListTemplate extends Component{
                 Authorization: this.props.token
         }});
         res.data.data.map(
-            ({id, name, price, tag, status, productDeletedAt, address, orderDeletedAt,image,sellerId}) =>(
+            ({id, name, price, tag, status, productDeletedAt, address, orderDeletedAt,image,sellerId, orderCreatedAt}) =>(
                 this.setState({
                     items : this.state.items.concat({
                         id:id , 
                         name:name, 
                         price:price, 
                         tag:tag, 
-                        photo : image, 
+                        photo : (image === null ? null :'http://localhost:3000/'+image.url), 
                         cancel : (orderDeletedAt==null && productDeletedAt==null ? false : true), 
                         address : address, 
                         completed :(status==1 ? true : false), 
-                        provider: sellerId
+                        provider: sellerId,
+                        orderCreatedAt : orderCreatedAt
                     })
                 })
             )

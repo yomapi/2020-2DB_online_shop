@@ -43,7 +43,7 @@ class Provider extends Component{
             <BodyLayout>
                 <Switch>
                     <Route exact path={`${props.match.url}`} render ={(prop)=><Phome match={prop.match}/>}/>
-                    <Route path={`${props.match.url}/enroll`} render ={(prop)=><PenrollTemplate match={prop.match}/>}/>
+                    <Route path={`${props.match.url}/enroll`} render ={(prop)=><PenrollTemplate match={prop.match} token={this.state.Token} userId={this.state.userId}/>}/>
                     <Route path={`${props.match.url}/orders`} render ={(prop)=><PorderListTemplate match={prop.match} token={this.state.Token} userId={this.state.userId}/>}/>
                     <Route path={`${props.match.url}/user`} render ={(prop)=><PuserInfoTemplate match={prop.match}token={this.state.Token} userId={this.state.userId}/>}/>
                     <Route path={`${props.match.url}/login`} render ={(prop)=><PLoginTemplate match={prop.match} LoginHandler = {this.LoginHandler}/>}/>

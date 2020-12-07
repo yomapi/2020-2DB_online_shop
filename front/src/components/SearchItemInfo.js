@@ -29,7 +29,7 @@ class SearchItemInfo extends Component{
             providerId : res.data.sellerId,
             tag : res.data.tag,
             registrationDate : res.data.createdAt,
-            photo : 'https://i.pinimg.com/736x/eb/12/46/eb12465440ea39c8cd38bc31d73a1385.jpg'
+            photo : (res.data.image === null ? null :'http://localhost:3000/'+res.data.image.url)
         })
     }
 

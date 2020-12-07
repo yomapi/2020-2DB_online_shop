@@ -7,7 +7,6 @@ class PorderItem extends Component{
 
     render(){
         const{id,name, tag, price, photo, orderdate, cancel, completed, address, provider} = this.props;
-
         return(
             <Link to={`/provider/orders/${id}`}>
                 <div className="order-wrapper">

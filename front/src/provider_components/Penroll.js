@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import './Penroll.css';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 class Penroll extends Component{
     constructor(props){
         super(props);
         this.state={
+            id : 0,
             provider: '',
             name: '',
             tags: '',
@@ -21,7 +23,7 @@ class Penroll extends Component{
     }
 
     handleChange_tags=(e)=>{
-        this.setState({tages : e.target.value})
+        this.setState({tags : e.target.value})
     }
 
     handleChange_price = (e) =>{
@@ -34,8 +36,8 @@ class Penroll extends Component{
 
     handleChange_file = (e) =>{
         e.preventDefault();
-        let reader = new FileReader();
         let file = e.target.files[0];
+        let reader = new FileReader();
         reader.onloadend = () =>{
             this.setState({
                 file : file,
@@ -45,15 +47,44 @@ class Penroll extends Component{
         reader.readAsDataURL(file);
     }
 
+    onEnroll=async()=>{
+        const res = await this.onEnrollData();
+        console.log(res)
+        await this.onEnrollFile(res);
+    }
 
-    onEnroll=()=>{
+    onEnrollData=async()=>{
+        const res = await axios.post(`/products`, 
+        {
+            name : this.state.name,
+            tags : this.state.tags,
+            price : this.state.price,
+            discription : this.state.discription
+        },
+        {
+            headers: {
+                Authorization: this.props.token
+            }
+        });
+        this.setState({id : res.data.id});
+        console.log(res)
+        return res.data.id;
+    }
 
+    onEnrollFile=async(id)=>{
+
+        const formData = new FormData();
+        formData.append('productId',id)
+        formData.append('file',this.state.file);
+        console.log(id,this.state.file)
+
+        fetch('/file', {
+            method:'post',
+            body: formData
+        })
     }
     
     onKeyPress=(e)=>{
-        if(e.key === 'Enter'){
-            this.onEnroll();
-        }
     }
 
     render(){

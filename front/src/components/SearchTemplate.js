@@ -28,10 +28,17 @@ class SearchTemplate extends Component{
         await this.setState({items:[]})
         const res = await axios.get('/products');
         res.data.map(
-            ({id, name, price, tag, deletedAt}) =>(
-                this.setState({items : this.state.items.concat({id:id , name:name, price:price, tag:tag, photo : "https://lh3.google.com/u/0/ogw/ADGmqu_PrO7E2qRHeCSXQAQlPhmM5m_bNrvGYrlDMW4d=s32-c-mo", deletedAt:deletedAt})})
+            ({id, name, price, tag, deletedAt,image}) =>(
+                this.setState({items : this.state.items.concat({
+                    id:id ,
+                    name:name,
+                    price:price, 
+                    tag:tag, 
+                    photo : (image === null ? null :'http://localhost:3000/'+image.url), 
+                    deletedAt:deletedAt})})
             )
         )
+        console.log(res)
     }
 
     componentDidMount(){
