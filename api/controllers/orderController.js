@@ -227,10 +227,8 @@ exports.SellerOrderInfo = async (req, res) => {
         for (order of result) {
             order.image = await File.getImageById(order.productId)
         }
-        data = {
-            data: result[0]
-        }
-        return res.status(200).json(data)
+
+        return res.status(200).json(result[0])
     } catch (err) {
         return res.status(500).json({message:err.message})
     }
