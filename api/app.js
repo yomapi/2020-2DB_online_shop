@@ -9,9 +9,10 @@ let userRouter = require('./routes/userRouter');
 let authRouter = require('./routes/authRouter');
 let productRouter = require('./routes/productRouter');
 let orderRouter = require('./routes/orderRouter');
+let fileRouter = require('./routes/fileRouter');
 
 let app = express();
-
+app.use('/file', express.static('file'));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -27,6 +28,7 @@ app.use('/', userRouter);
 app.use('/', authRouter);
 app.use('/', productRouter);
 app.use('/', orderRouter);
+app.use('/', fileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
