@@ -11,5 +11,5 @@ router.get('/products/provider/:provider', productController.ProductSearchBySell
 router.get('/products/:productId', productController.ProductInfo)
 router.delete('/products/:productId',sellerOnly, productController.ProductDelete)
 router.put('/products/:productId',sellerOnly, productController.ProductUpdate)
-
+router.get('/provider/products/',sellerOnly, productController.ProductSellerList)
 module.exports = router;

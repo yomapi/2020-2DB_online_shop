@@ -181,3 +181,24 @@ exports.ProductUpdate = async (req, res) => {
         return res.status(500).json(error.message)
     }
 }
+
+exports.ProductSellerList = async (req, res) => {
+    const token = req.decoded
+    let products = null
+    try {
+        products = await Product.findAll({
+            paranoid: false,
+            where: {sellerId: token.id}
+        })
+        
+        if (products.length > 0) {
+            for (product of products) {
+                
+                product.dataValues.image = await File.getImageById(product.dataValues.id)
+            }
+        } 
+        return res.status(200).json(products)
+    } catch(error) {
+        return res.status(500).json(error.message)
+    }
+}
