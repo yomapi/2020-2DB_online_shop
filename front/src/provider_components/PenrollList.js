@@ -19,7 +19,7 @@ class PenrollList extends Component{
     }
 
     render(){
-        const items = this.state.items
+        const {items} = this.props
         const itemList = items.map(
                 ({id,name,tag,price,photo,expired}) =>(
                     <PenrollItem id={id} name={name} tag={tag} price={price} photo={photo} expired={expired}/>

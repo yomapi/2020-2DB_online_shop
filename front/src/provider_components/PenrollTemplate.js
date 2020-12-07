@@ -14,6 +14,7 @@ class PenrollTemplate extends Component{
             items : [],
             searchby : "name"
         }
+        this._getAllProductList()
     }
 
     onSearch = (items) =>{
@@ -24,16 +25,16 @@ class PenrollTemplate extends Component{
 
     _getAllProductList = async() =>{
         await this.setState({items:[]})
-        const res = await axios.get('/products');
+        const res = await axios.get('/provider/products',{
+            headers: {
+                Authorization: this.props.token
+            }
+        });
         res.data.map(
             ({id, name, price, tag, deletedAt,image}) =>(
                 this.setState({items : this.state.items.concat({id:id , name:name, price:price, tag:tag, photo : (image === null ? null :'http://localhost:3000/'+image.url), deletedAt:deletedAt})})
             )
         )
-    }
-
-    componentDidMount(){
-        this._getAllProductList();
     }
 
 
@@ -53,7 +54,7 @@ class PenrollTemplate extends Component{
                         </div>
                         </Link>
                         <Link to ="/provider/enroll">
-                        <div className = "enroll-menu-item">
+                        <div className = "enroll-menu-item" onClick={this._getAllProductList}>
                             상품 등록
                         </div>
                         </Link>
@@ -62,7 +63,7 @@ class PenrollTemplate extends Component{
                         <div>
                             <Switch>
                                 <Route path={`${props.match.url}/list/:id`} component={PenrollItemInfo}/>
-                                <Route path={`${props.match.url}/list`} component={PenrollList}/>
+                                <Route path={`${props.match.url}/list`} render={()=><PenrollList items = {this.state.items}/>}/>
                                 <Route exact = {true} path={`${props.match.url}`} render={()=><Penroll token = {this.props.token}/>}/>
                             </Switch>
                         </div>   
