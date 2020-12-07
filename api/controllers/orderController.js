@@ -214,8 +214,7 @@ exports.SellerOrderInfo = async (req, res) => {
             type: sequelize.QueryTypes.SELECT
         })
         data = {
-            count: result.length,
-            data: result
+            data: result[0]
         }
         return res.status(200).json(data)
     } catch (err) {
