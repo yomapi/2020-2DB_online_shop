@@ -13,11 +13,7 @@ exports.UserInfo = async (req, res) => {
     user = await User.findByPk(id)
      //TODO: 판매자인지도 같이 보내줄것
     if (user) {
-        data = {
-            id: user.id,
-            name: user.name
-        }
-        return res.status(200).json(data)
+        return res.status(200).json(user)
     } else {
         message = "User Not Found"
         return res.status(404).json( {message} )
