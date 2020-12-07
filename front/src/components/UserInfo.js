@@ -21,7 +21,8 @@ class UserInfo extends Component{
             token: this.props.token,
             userId : this.props.userId,
             userName : '',
-            registerDate:''
+            registerDate:'',
+            updateDate: ''
         })
         this.getInfo();
     }
@@ -32,11 +33,15 @@ class UserInfo extends Component{
             headers: {
                 Authorization: this.state.token
         }});
-        this.setState({userName : res.data.name});
+        this.setState({
+            userName : res.data.name,
+            registerDate : res.data.createdAt,
+            updateDate : res.data.updatedAt
+        });
     }
 
     render(){
-        const{userId,userName,registerDate} = this.state;
+        const{userId,userName,registerDate,updateDate} = this.state;
         
         return(
             <div className="info-wrapper">
@@ -57,6 +62,10 @@ class UserInfo extends Component{
                                 <div className="order-pod">
                                     <span className="tag-pod">가입일</span>
                                     {registerDate}
+                                </div>
+                                <div className="order-pod">
+                                    <span className="tag-pod">수정일</span>
+                                    {updateDate}
                                 </div>
                             </div>
                             <Link to = '/user/update'>

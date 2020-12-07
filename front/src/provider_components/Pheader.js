@@ -2,34 +2,39 @@ import React, {Children, Component} from 'react';
 import {Route, Switch, BrowserRouter,Link} from 'react-router-dom'
 import styled from 'styled-components';
 
-const Pheader = (props) =>{
+class Pheader extends Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
     return(
-        <Container>
-                <Element>
-                    <LogoWrapper>
-                        <Logo>
-                            <Link to='/provider'>
-                                Khusinsa_provider
-                            </Link>
-                        </Logo>
-                    </LogoWrapper>
-                    <HeaderMenu>
-                        <Menu>
-                            <Nav>
-                                <NavList>
-                                    <NavItem><Link to='/provider/enroll/list'>상품 등록</Link></NavItem>
-                                    <NavItem><Link to ='/provider/orders'>주문 내역</Link></NavItem>
-                                    <NavItem><Link to ='/provider/user'>판매자 정보</Link></NavItem>
-                                </NavList>
-                            </Nav>
-                            <Sign>
-                                <Link to = '/provider/login'><SignItem>회원가입/로그인</SignItem></Link>
-                            </Sign>
-                        </Menu>
-                    </HeaderMenu>
-                </Element>
-            </Container>
-    )
+            <Container>
+                    <Element>
+                        <LogoWrapper>
+                            <Logo>
+                                <Link to='/provider'>
+                                    Khusinsa_provider
+                                </Link>
+                            </Logo>
+                        </LogoWrapper>
+                        <HeaderMenu>
+                            <Menu>
+                                <Nav>
+                                    <NavList>
+                                        {this.props.login ? <NavItem><Link to ='/provider/enroll/list'>상품등록</Link></NavItem> : ''}
+                                        {this.props.login ? <NavItem><Link to ='/provider/orders'>주문내역</Link></NavItem> : ''}
+                                        {this.props.login ? <NavItem><Link to ='/provider/user'>판매자 정보</Link></NavItem> : ''}
+                                    </NavList>
+                                </Nav>
+                                <Sign>
+                                    {this.props.login ? <Link to = '/provider'><SignItem onClick={this.props.LogoutHandler}> 로그아웃 </SignItem></Link> : <Link to = '/provider/login'><SignItem> 회원가입/로그인 </SignItem></Link>}
+                                </Sign>
+                            </Menu>
+                        </HeaderMenu>
+                    </Element>
+                </Container>
+        )
+    }
     
 }
 

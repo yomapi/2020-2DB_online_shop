@@ -1,11 +1,18 @@
 import React, {Component} from 'react';
 import './Plogin.css';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
+import axios from 'axios'
 
 class Plogin extends Component{
-    state={
-        userId:'ID',
-        password: 'PASSWORD'
+    constructor(props){
+        super(props);
+        this.state={
+            userId:'ID',
+            password: 'PASSWORD',
+            Token : '',
+            isSeller : false,
+            Logged : false
+        }
     }
 
     handleChange=(e)=>{
@@ -17,8 +24,30 @@ class Plogin extends Component{
     }
 
 
-    onLogin=()=>{
+    onLogin=async()=>{
+        await this.getToken();
+        await this.getInfo();
+        if (this.state.Token != "" && this.state.isSeller==true){
+            this.props.LoginHandler(this.state.Token, this.state.userId);
+            this.setState({Logged:true});
+        }
+    }
 
+    getToken = async() =>{
+        const res = await axios.put('/signIn', {
+            id: this.state.userId,
+            password: this.state.password
+          })
+        this.setState({Token:res.data.Token})
+    }
+
+    getInfo = async() =>{
+        const res = await axios.get(`/user/${this.state.userId}`, 
+        {
+            headers: {
+                Authorization: this.state.Token
+        }});
+        this.setState({isSeller : res.data.isSeller})
     }
     
     onKeyPress=(e)=>{
@@ -27,11 +56,18 @@ class Plogin extends Component{
         }
     }
 
+    renderRedirect = () => {
+        if(this.state.Logged){
+            return <Redirect to='/provider' />
+        }
+    }
+
     render(){
         const{id,userId,userName,registerDate} = this.state;
         
         return(
             <div className="info-wrapper">
+                {this.renderRedirect()}
                 <div className="info-box">
                     <div className="order-Right">
                         <div className = "user-info-box">
@@ -46,7 +82,7 @@ class Plogin extends Component{
                                     <input value={this.state.password} onChange={this.handleChange_pass} onKeyPress={this.onKeyPress}/>
                                 </div>
                                 <div className="button-pod">
-                                    <Link to = '/provider'>
+                                    <Link to = {this.state.Logged ? '/provider' : '/provider/login'}>
                                         <div className="update-button" onClick={this.onLogin}>
                                             로그인
                                         </div>

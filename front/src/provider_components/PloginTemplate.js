@@ -16,7 +16,7 @@ const PloginTemplate = (props) =>{
                 <div>
                     <Switch>
                         <Route path={`${props.match.url}/signup`} component={PloginSignUp} />
-                        <Route exact = {true} path={`${props.match.url}`} component={Plogin}/>
+                        <Route exact = {true} path={`${props.match.url}`} render={()=><Plogin LoginHandler = {props.LoginHandler}/>}/>
                     </Switch>
                 </div>   
             </section>

@@ -46,7 +46,7 @@ class LoginSignUp extends Component{
     
     onKeyPress=(e)=>{
         if(e.key === 'Enter'){
-            this.onSignUp();
+            this.postSignUp();
         }
     }
 

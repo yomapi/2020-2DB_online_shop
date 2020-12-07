@@ -1,14 +1,18 @@
 import React, {Component} from 'react';
 import './PuserInfoUpdate.css';
 import {Link} from 'react-router-dom';
+import axios from 'axios'
 
 class PuserInfoUpdate extends Component{
-    state={
-        id:1,
-        userId:'kdysy1130',
-        userName:'김대연',
-        registerDate:'2020-01-23',
-        password: ''
+    constructor(props){
+        super(props);
+        this.state={
+            token: this.props.token,
+            userId : this.props.userId,
+            userName:'',
+            registerDate:'',
+            password: ''
+        };
     }
 
     handleChange=(e)=>{
@@ -26,18 +30,44 @@ class PuserInfoUpdate extends Component{
     
     onKeyPress=(e)=>{
         if(e.key === 'Enter'){
-            this.onUpdate();
+            this.putInfo();
         }
     }
 
 
     componentDidMount(){
         this.setState({
-            id:1,
-            userId:'kdysy1130',
-            userName:'김대연',
-            registerDate:'2020-01-23'
+            token: this.props.token,
+            userId : this.props.userId,
+            userName : '',
+            registerDate:''
         })
+        this.getInfo();
+    }
+
+    getInfo = async() =>{
+        const res = await axios.get(`/user/${this.state.userId}`, 
+        {
+            headers: {
+                Authorization: this.state.token
+        }});
+        this.setState({userName : res.data.name});
+    }
+
+    putInfo = async() =>{
+        console.log(this.state.token)
+        const res = await axios.put(`/user/${this.state.userId}`, 
+        {
+            password : this.state.password,
+            name : this.state.userName
+        },
+        {
+            headers: {
+                Authorization: this.state.token
+            }
+        });
+        this.setState({userName : res.data.name});
+        console.log(res)
     }
 
     render(){
@@ -59,7 +89,7 @@ class PuserInfoUpdate extends Component{
                                 <input value={this.state.password} onChange={this.handleChange_pass} onKeyPress={this.onKeyPress}/>
                             </div>
                             <Link to = '/provider/user'>
-                            <div className="update-button" onClick={this.onUpdate}>
+                            <div className="update-button" onClick={this.putInfo}>
                                 변경
                             </div>
                             </Link>

@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import './PloginSignUp.css';
-import {Link} from 'react-router-dom';
+import {Link,Redirect} from 'react-router-dom';
+import axios from 'axios'
 
 class PloginSignUp extends Component{
-    state={
-        userId:'',
-        name: '',
-        password: ''
+    constructor(props){
+        super(props);
+        this.state={
+            userId:'',
+            name: '',
+            password: '',
+            status: 0
+        }
     }
 
     handleChange=(e)=>{
@@ -21,14 +26,26 @@ class PloginSignUp extends Component{
         this.setState({password : e.target.value})
     }
 
+    renderRedirect = () => {
+        if(this.state.status == 201){
+            return <Redirect to='/provider/login' />
+        }
+    }
 
-    onSignUp=()=>{
-
+    postSignUp = async() =>{
+        const res = await axios.post('/signUp', {
+            id: this.state.userId,
+            password: this.state.password,
+            name : this.state.name,
+            isSeller : true
+          })
+        this.setState({status : res.status})
+        console.log("sta",res)
     }
     
     onKeyPress=(e)=>{
         if(e.key === 'Enter'){
-            this.onSignUp();
+            this.postSignUp();
         }
     }
 
@@ -54,12 +71,11 @@ class PloginSignUp extends Component{
                                 <span className="tag-pod">비밀번호</span>
                                 <input value={this.state.password} onChange={this.handleChange_pass} onKeyPress={this.onKeyPress}/>
                             </div>
-                            <Link to = '/provider/login'>
-                                <div className="update-button" onClick={this.onSignUp}>
+                                <div className="update-button" onClick={this.postSignUp}>
                                     가입완료
                                 </div>
-                            </Link>
                             </div>
+                            {this.renderRedirect()}
                         </div>
                     </div>
                 </div>
