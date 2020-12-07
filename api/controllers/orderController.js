@@ -36,7 +36,7 @@ exports.OrderInfo = async (req, res) => {
     let result = null
     
     const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, 
-                   o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orderDeletedAt
+                   o.productId, o.sellerId, o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orderDeletedAt
                    from Orders o, Products p
                    where o.customerId = '${userId}' and o.productId = p.id and o.id = '${orderId}'` 
     
@@ -91,7 +91,7 @@ exports.OrderList = async (req, res) => {
     let result = null
     
     const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, 
-                   o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orderDeletedAt
+                   o.productId, o.sellerId, p.content, o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.deletedAt as productDeletedAt, o.deletedAt as orderDeletedAt
                    from Orders o, Products p
                    where o.customerId = '${userId}' and o.productId = p.id` 
     
@@ -121,7 +121,7 @@ exports.OrderSearchByStatus = async (req, res) => {
     const status = req.params.status
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId, p.content, o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.customerId = '${userId}' and o.status = ${status} and o.productId = p.id` 
     
@@ -151,7 +151,7 @@ exports.OrderSearchByTags = async (req, res) => {
     const tag = req.params.tag
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId, o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.customerId = '${userId}' and p.tag Like '%${tag}%' and o.productId = p.id` 
     
@@ -180,7 +180,7 @@ exports.OrderSearchByName = async (req, res) => {
     const name = req.params.name
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId,o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.customerId = '${userId}' and p.name Like '%${name}%' and o.productId = p.id` 
     
@@ -213,7 +213,7 @@ exports.SellerOrderInfo = async (req, res) => {
     
 
     let result = null
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.customerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.customerId, p.content,o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt,  p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.sellerId = '${userId}' and o.productId = p.id and o.id = '${orderId}'` 
     
@@ -272,7 +272,7 @@ exports.SellerOrderList =  async (req, res) => {
     const userId = req.params.userId
 
     let result = null
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId, p.content, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.sellerId, p.content,o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.sellerId = '${userId}' and o.productId = p.id` 
     
@@ -301,7 +301,7 @@ exports.SellerOrderSearchByStatus = async (req, res) => {
     const status = req.params.status
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, o.productId, o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.name, p.price, p.tag, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.sellerId = '${userId}' and  o.status = ${status} and o.productId = p.id` 
     
@@ -312,7 +312,9 @@ exports.SellerOrderSearchByStatus = async (req, res) => {
         result = await sequelize.query(query, {
             type: sequelize.QueryTypes.SELECT
         })
+        
         for (order of result) {
+            console.log(order)
             order.image = await File.getImageById(order.productId)
         }
         data = {
@@ -330,7 +332,7 @@ exports.SellerOrderSearchByTags = async (req, res) => {
     const tag = req.params.tag
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, o.productId, o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.sellerId = '${userId}' and p.tag Like '%${tag}%' and o.productId = p.id` 
     
@@ -359,7 +361,7 @@ exports.SellerOrderSearchByName = async (req, res) => {
     const name = req.params.name
     let result = null
     
-    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, p.tag, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
+    const query = `select DISTINCT o.id, o.status, o.address, p.name, p.price, o.productId, o.createdAt as orderCreatedAt, p.createdAt as productCreatedAt, p.tag, p.deletedAt as productDeletedAt, o.deletedAt as orederDeletedAt
                    from Orders o, Products p
                    where o.sellerId = '${userId}' and p.name Like '%${name}%' and o.productId = p.id` 
     
